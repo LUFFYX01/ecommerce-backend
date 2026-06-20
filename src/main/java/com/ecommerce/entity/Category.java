@@ -2,6 +2,8 @@ package com.ecommerce.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.List;
 
 @Entity
 @Table(name = "categories")
@@ -13,4 +15,8 @@ public class Category {
     private Long id;
 
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    @JsonIgnore
+    private List<Product> products;
 }

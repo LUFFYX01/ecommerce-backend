@@ -51,4 +51,8 @@ public class ProductController {
 
         return productService.deleteProduct(id);
     }
+    @GetMapping("/test")
+    public String test() {
+        return "ADMIN ACCESS WORKS";
+    }
 }

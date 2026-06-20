@@ -21,11 +21,20 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/api/auth/**")
                         .permitAll()
+
+                        .requestMatchers("/api/products/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/api/categories/**")
+                        .hasRole("ADMIN")
+
                         .anyRequest()
                         .authenticated()
                 )
+
                 .formLogin(form -> form.disable())
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .addFilterBefore(

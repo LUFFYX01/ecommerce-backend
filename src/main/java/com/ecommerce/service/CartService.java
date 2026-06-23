@@ -49,4 +49,11 @@ public class CartService {
                 userId
         );
     }
+
+    public String removeFromCart(Long cartItemId) {
+
+        cartRepository.deleteById(cartItemId);
+
+        return "Item Removed From Cart";
+    }
 }

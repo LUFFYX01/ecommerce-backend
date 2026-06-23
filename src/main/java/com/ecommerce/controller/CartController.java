@@ -28,4 +28,12 @@ public class CartController {
 
         return cartService.getCart(userId);
     }
+    @DeleteMapping("/{cartItemId}")
+    public String removeFromCart(
+            @PathVariable Long cartItemId) {
+
+        return cartService.removeFromCart(
+                cartItemId
+        );
+    }
 }

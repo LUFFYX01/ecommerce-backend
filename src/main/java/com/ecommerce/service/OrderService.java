@@ -15,6 +15,7 @@ import com.ecommerce.repository.ProductRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import com.ecommerce.exception.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,13 +31,17 @@ public class OrderService {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(() ->
-                        new RuntimeException("User Not Found"));
+                        new UserNotFoundException(
+                                "User Not Found"));
 
         List<CartItem> cartItems =
                 cartRepository.findByUserId(userId);
 
         if (cartItems.isEmpty()) {
-            throw new RuntimeException("Cart is Empty");
+
+            throw new CartEmptyException(
+                    "Cart is Empty"
+            );
         }
 
         Order order = new Order();
@@ -55,7 +60,7 @@ public class OrderService {
 
             if (product.getStock() < cartItem.getQuantity()) {
 
-                throw new RuntimeException(
+                throw new InsufficientStockException(
                         "Insufficient Stock for "
                                 + product.getName()
                 );

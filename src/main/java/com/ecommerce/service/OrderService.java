@@ -8,6 +8,7 @@ import com.ecommerce.repository.CartRepository;
 import com.ecommerce.repository.OrderItemRepository;
 import com.ecommerce.repository.OrderRepository;
 import com.ecommerce.repository.UserRepository;
+import com.ecommerce.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.ecommerce.entity.Product;
@@ -104,15 +105,35 @@ public class OrderService {
         return order;
     }
 
-    public List<Order> getOrdersByUser(Long userId) {
-
-        return orderRepository.findByUserId(userId);
-    }
-
     public List<OrderItem> getOrderDetails(
             Long orderId) {
 
         return orderItemRepository
                 .findByOrderId(orderId);
+    }
+
+    public Order placeOrder() {
+
+        String email =
+                SecurityUtils.getCurrentUserEmail();
+
+        User user =
+                userRepository.findByEmail(email)
+                        .orElseThrow();
+
+        return placeOrder(user.getId());
+    }
+    public List<Order> getMyOrders() {
+
+        String email =
+                SecurityUtils.getCurrentUserEmail();
+
+        User user =
+                userRepository.findByEmail(email)
+                        .orElseThrow();
+
+        return orderRepository.findByUserId(
+                user.getId()
+        );
     }
 }

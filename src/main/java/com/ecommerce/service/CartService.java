@@ -9,6 +9,7 @@ import com.ecommerce.repository.ProductRepository;
 import com.ecommerce.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.ecommerce.security.SecurityUtils;
 
 import java.util.List;
 
@@ -23,13 +24,17 @@ public class CartService {
     public CartItem addToCart(
             CartRequest request) {
 
-        User user = userRepository.findById(
-                request.getUserId()
-        ).orElseThrow();
+        String email =
+                SecurityUtils.getCurrentUserEmail();
 
-        Product product = productRepository.findById(
-                request.getProductId()
-        ).orElseThrow();
+        User user =
+                userRepository.findByEmail(email)
+                        .orElseThrow();
+
+        Product product =
+                productRepository.findById(
+                        request.getProductId()
+                ).orElseThrow();
 
         CartItem cartItem = new CartItem();
 
@@ -40,13 +45,20 @@ public class CartService {
         );
 
         return cartRepository.save(cartItem);
+
     }
 
-    public List<CartItem> getCart(
-            Long userId) {
+    public List<CartItem> getCart() {
+
+        String email =
+                SecurityUtils.getCurrentUserEmail();
+
+        User user =
+                userRepository.findByEmail(email)
+                        .orElseThrow();
 
         return cartRepository.findByUserId(
-                userId
+                user.getId()
         );
     }
 

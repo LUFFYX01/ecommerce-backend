@@ -36,11 +36,10 @@ public class CartController {
             summary = "View Cart",
             description = "Retrieves all items present in a user's shopping cart"
     )
-    @GetMapping("/{userId}")
-    public List<CartItem> getCart(
-            @PathVariable Long userId) {
+    @GetMapping
+    public List<CartItem> getCart() {
 
-        return cartService.getCart(userId);
+        return cartService.getCart();
     }
 
     @Operation(

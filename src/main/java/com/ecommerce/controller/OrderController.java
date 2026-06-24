@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.ecommerce.security.SecurityUtils;
 
 import java.util.List;
 
@@ -25,33 +26,31 @@ public class OrderController {
             summary = "Place Order",
             description = "Creates an order from all items currently present in the user's cart"
     )
-    @PostMapping("/place/{userId}")
-    public Order placeOrder(
-            @PathVariable Long userId) {
+    @PostMapping("/place")
+    public Order placeOrder() {
 
-        return orderService.placeOrder(userId);
+        return orderService.placeOrder();
     }
 
     @Operation(
             summary = "Get Order History",
             description = "Retrieves all orders placed by a specific user"
     )
-    @GetMapping("/user/{userId}")
-    public List<Order> getOrdersByUser(
-            @PathVariable Long userId) {
 
-        return orderService.getOrdersByUser(userId);
-    }
-
-    @Operation(
-            summary = "Get Order Details",
-            description = "Retrieves all products, quantities and prices associated with an order"
-    )
     @GetMapping("/{orderId}")
     public List<OrderItem> getOrderDetails(
             @PathVariable Long orderId) {
 
         return orderService
                 .getOrderDetails(orderId);
+    }
+    @Operation(
+            summary = "Get Order Details",
+            description = "Retrieves all products, quantities and prices associated with an order"
+    )
+    @GetMapping("/my-orders")
+    public List<Order> getMyOrders() {
+
+        return orderService.getMyOrders();
     }
 }

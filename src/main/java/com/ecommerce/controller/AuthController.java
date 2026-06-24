@@ -1,6 +1,7 @@
 package com.ecommerce.controller;
 
 import com.ecommerce.dto.RegisterRequest;
+import com.ecommerce.security.SecurityUtils;
 import com.ecommerce.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -44,5 +45,10 @@ public class AuthController {
             @RequestBody LoginRequest request) {
 
         return authService.login(request);
+    }
+    @GetMapping("/me")
+    public String me() {
+
+        return SecurityUtils.getCurrentUserEmail();
     }
 }
